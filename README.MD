@@ -20,7 +20,7 @@ tests.exe
 
 The tests output look like this:
 
-![Test Runner running the DOSBOX](images/tests.png)
+![Test Runner running the DOSBOX](IMAGES/tests.png)
 
 ## Data Structures
 
