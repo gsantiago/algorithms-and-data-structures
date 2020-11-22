@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include "LLIST.H"
+#include "llist.h"
 
 cell_t* ll_cell(int data) {
   cell_t *cell = malloc(sizeof(cell_t));

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "LLIST.H"
-#include "../BASE.H"
+#include "llist.h"
+#include "../base.h"
 
 void cell_tests() {
   cell_t* cell;

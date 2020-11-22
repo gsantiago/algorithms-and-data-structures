@@ -1,20 +1,22 @@
-LLIST.C: LLIST.H
-	tcc -c LLIST.C
+llist.c: llist.h
+	tcc -c llist.c
 
-LLIST.OBJ: LLIST.C
+llist.obj: llist.c
 
-MAIN.C:
-	tcc -c MAIN.C
+tests.c:
+	tcc -c tests.c
 
-MAIN.OBJ: LLIST.OBJ MAIN.C
+tests.obj: llist.obj tests.c
 
-compile: MAIN.OBJ
-	tcc -c -I..\ ..\BASE.C
-	tcc MAIN.OBJ LLIST.OBJ BASE.OBJ
+compile: tests.obj
+	tcc -c -I..\ ..\base.c
+	tcc tests.obj llist.obj base.obj
 
 run: compile
-	MAIN.EXE
+	tests.exe
 
 clean:
-	del *.OBJ
-	del *.EXE
+	rescan
+	del *.obj
+	del *.exe
+	del *.log

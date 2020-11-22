@@ -4,7 +4,7 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
-#include "BASE.H"
+#include "base.h"
 
 typedef struct {
   int index;
@@ -88,7 +88,7 @@ void tests_begin(int argc, char **argv) {
   test.time = 0;
   test.iterative = cli_contains(argc, argv, "-i");
   test.log = cli_contains(argc, argv, "-l")
-    ? fopen("test.log", "w+")
+    ? fopen("tests.log", "w+")
     : NULL;
 }
 
@@ -172,6 +172,14 @@ void expect_eql(char *message, int expression) {
 
 void expect_bool(char *message, bool actual, bool expected) {
   print_result(actual == expected, message);
+}
+
+void expect_true(char *message, bool value) {
+  print_result(value, message);
+}
+
+void expect_false(char *message, bool value) {
+  print_result(!value, message);
 }
 
 void expect_null(char *message, void *pointer) {

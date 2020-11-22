@@ -1,7 +1,7 @@
 #ifndef LLIST_H_INCLUDED
 #define LLIST_H_INCLUDED
 
-#include "../BASE.H"
+#include "../base.h"
 
 typedef struct cell {
   int data;
