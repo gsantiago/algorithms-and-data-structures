@@ -1,0 +1,20 @@
+LLIST.C: LLIST.H
+	tcc -c LLIST.C
+
+LLIST.OBJ: LLIST.C
+
+MAIN.C:
+	tcc -c MAIN.C
+
+MAIN.OBJ: LLIST.OBJ MAIN.C
+
+compile: MAIN.OBJ
+	tcc -c -I..\ ..\BASE.C
+	tcc MAIN.OBJ LLIST.OBJ BASE.OBJ
+
+run: compile
+	MAIN.EXE
+
+clean:
+	del *.OBJ
+	del *.EXE
