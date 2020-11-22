@@ -132,7 +132,17 @@ cell_t* ll_copy(cell_t *cell) {
 }
 
 void ll_concat(cell_t *first, cell_t *second) {
-  // ll_tail(first)->next = second;
+  ll_tail(first)->next = second;
+}
+
+cell_t* ll_tail(cell_t *list) {
+  cell_t *cell = list;
+
+  while (cell->next != NULL) {
+    cell = cell->next;
+  }
+
+  return cell;
 }
 
 static int count_digits(int number) {

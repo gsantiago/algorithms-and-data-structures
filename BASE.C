@@ -34,7 +34,7 @@ bool cli_contains(int argc, char **argv, char *command) {
   return false;
 }
 
-static void print_logf(char* format, ...) {
+static void print_logf(char *format, ...) {
   va_list args;
   va_start(args, format);
 
@@ -45,7 +45,7 @@ static void print_logf(char* format, ...) {
   va_end(args);
 }
 
-static void print_result(int result, char* message) {
+static void print_result(int result, char *message) {
   printf("  ");
 
   if (result) {
@@ -95,14 +95,25 @@ void tests_begin(int argc, char **argv) {
 int tests_end() {
   int total = test.passed + test.failed;
 
-  printf("\nTests:\t%d\n", total);
+  printf("\n");
+
+  textcolor(LIGHTGRAY);
+  cprintf("Tests: ");
+  textcolor(WHITE);
+  cprintf("%d\r\n", total);
+
+  textcolor(LIGHTGRAY);
+  cprintf("Passed: ");
   textcolor(GREEN);
-  printf("Passed:\t");
   cprintf("%d\r\n", test.passed);
-  printf("Failed:\t");
+
+  textcolor(LIGHTGRAY);
+  cprintf("Failed: ");
   textcolor(RED);
   cprintf("%d\r\n", test.failed);
-  printf("Time:\t%fs\n", test.time);
+
+  textcolor(LIGHTGRAY);
+  cprintf("Time: %fs\r\n", test.time);
 
   print_logf(
     "---\nPassed: %d/%d\nFailed: %d/%d\nTime: %fs\n",
@@ -120,7 +131,7 @@ int tests_end() {
   return test.failed > 0;
 }
 
-void test_start(char* message) {
+void test_start(char *message) {
   start = clock();
   cprintf("%d) %s ", ++test.index, message);
   print_logf("%d) %s\n", test.index, message);
@@ -147,19 +158,22 @@ void test_finish() {
   }
 }
 
-void expect_str(char* message, char* actual, char* expected) {
+void expect_str(char *message, char *actual, char *expected) {
   print_result(strcmp(actual, expected) == 0, message);
 }
 
-void expect_int(char* message, int actual, int expected) {
+void expect_int(char *message, int actual, int expected) {
   print_result(actual == expected, message);
 }
 
-void expect_eql(char* message, int expression) {
+void expect_eql(char *message, int expression) {
   print_result(expression != 0, message);
 }
 
-void expect_bool(char* message, bool actual, bool expected) {
+void expect_bool(char *message, bool actual, bool expected) {
   print_result(actual == expected, message);
 }
 
+void expect_null(char *message, void *pointer) {
+  print_result(pointer == NULL, message);
+}

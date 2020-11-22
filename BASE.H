@@ -24,10 +24,11 @@ bool cli_contains(int argc, char **argv, char *command);
 
 void tests_begin(int argc, char **argv);
 int tests_end();
-void test_start(char* message);
+void test_start(char *message);
 void test_finish();
 
-void expect_str(char* message, char* actual, char* expected);
-void expect_int(char* message, int actual, int expected);
-void expect_eql(char* message, int expression);
-void expect_bool(char* message, bool actual, bool expected);
+void expect_str(char *message, char *actual, char *expected);
+void expect_int(char *message, int actual, int expected);
+void expect_eql(char *message, int expression);
+void expect_bool(char *message, bool actual, bool expected);
+void expect_null(char *message, void *pointer);
