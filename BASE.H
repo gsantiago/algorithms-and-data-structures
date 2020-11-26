@@ -26,6 +26,7 @@ void tests_begin(int argc, char **argv);
 int tests_end();
 void test_start(char *message);
 void test_finish();
+void test(char *message, void (*test_fn)());
 
 void expect_str(char *message, char *actual, char *expected);
 void expect_int(char *message, int actual, int expected);

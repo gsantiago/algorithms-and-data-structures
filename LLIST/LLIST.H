@@ -1,5 +1,5 @@
-#ifndef LLIST_H_INCLUDED
-#define LLIST_H_INCLUDED
+#ifndef LLIST_H
+#define LLIST_H
 
 #include "../base.h"
 
@@ -24,5 +24,6 @@ void ll_concat(cell_t *first, cell_t *second);
 char* ll_stringify(cell_t *head);
 bool ll_is_equal(cell_t *list1, cell_t *list2);
 cell_t* ll_tail(cell_t *list);
-
+void ll_swap(cell_t *cell1, cell_t *cell2);
+void ll_reverse(cell_t *list);
 #endif

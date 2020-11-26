@@ -17,7 +17,7 @@ typedef struct {
   FILE *log;
 } test_t;
 
-test_t test;
+test_t test_obj;
 
 clock_t start, end;
 double cpu_time_used;
@@ -38,8 +38,8 @@ static void print_logf(char *format, ...) {
   va_list args;
   va_start(args, format);
 
-  if (test.log != NULL) {
-    vfprintf(test.log, format, args);
+  if (test_obj.log != NULL) {
+    vfprintf(test_obj.log, format, args);
   }
 
   va_end(args);
@@ -53,13 +53,13 @@ static void print_result(int result, char *message) {
     textcolor(BLACK);
     cprintf("PASS");
     print_logf("[PASS]");
-    test.passed++;
+    test_obj.passed++;
   } else {
     textbackground(RED);
     textcolor(BLACK);
     cprintf("FAIL");
     print_logf("[FAIL]");
-    test.failed++;
+    test_obj.failed++;
   }
 
   textbackground(BLACK);
@@ -82,18 +82,18 @@ void tests_begin(int argc, char **argv) {
 
   clrscr();
 
-  test.index = 0;
-  test.passed = 0;
-  test.failed = 0;
-  test.time = 0;
-  test.iterative = cli_contains(argc, argv, "-i");
-  test.log = cli_contains(argc, argv, "-l")
+  test_obj.index = 0;
+  test_obj.passed = 0;
+  test_obj.failed = 0;
+  test_obj.time = 0;
+  test_obj.iterative = cli_contains(argc, argv, "-i");
+  test_obj.log = cli_contains(argc, argv, "-l")
     ? fopen("tests.log", "w+")
     : NULL;
 }
 
 int tests_end() {
-  int total = test.passed + test.failed;
+  int total = test_obj.passed + test_obj.failed;
 
   printf("\n");
 
@@ -105,38 +105,38 @@ int tests_end() {
   textcolor(LIGHTGRAY);
   cprintf("Passed: ");
   textcolor(GREEN);
-  cprintf("%d\r\n", test.passed);
+  cprintf("%d\r\n", test_obj.passed);
 
   textcolor(LIGHTGRAY);
   cprintf("Failed: ");
   textcolor(RED);
-  cprintf("%d\r\n", test.failed);
+  cprintf("%d\r\n", test_obj.failed);
 
   textcolor(LIGHTGRAY);
-  cprintf("Time: %fs\r\n", test.time);
+  cprintf("Time: %fs\r\n", test_obj.time);
 
   print_logf(
     "---\nPassed: %d/%d\nFailed: %d/%d\nTime: %fs\n",
-    test.passed,
+    test_obj.passed,
     total,
-    test.failed,
+    test_obj.failed,
     total,
-    test.time
+    test_obj.time
   );
 
-  if (test.log != NULL) {
-    fclose(test.log);
+  if (test_obj.log != NULL) {
+    fclose(test_obj.log);
   }
 
-  return test.failed > 0;
+  return test_obj.failed > 0;
 }
 
 void test_start(char *message) {
   start = clock();
-  cprintf("%d) %s ", ++test.index, message);
-  print_logf("%d) %s\n", test.index, message);
-  test.x = wherex();
-  test.y = wherey();
+  cprintf("%d) %s ", ++test_obj.index, message);
+  print_logf("%d) %s\n", test_obj.index, message);
+  test_obj.x = wherex();
+  test_obj.y = wherey();
   printf("\n");
 }
 
@@ -146,20 +146,31 @@ void test_finish() {
   y = wherey();
   end = clock();
   cpu_time_used = ((double) (end - start) / CLOCKS_PER_SEC);
-  test.time += cpu_time_used;
-  gotoxy(test.x, test.y);
+  test_obj.time += cpu_time_used;
+  gotoxy(test_obj.x, test_obj.y);
   cprintf("(%.4fs)", cpu_time_used);
   print_logf("(%fs)\n\n", cpu_time_used);
   gotoxy(x, y);
 
-  if (test.iterative) {
+  if (test_obj.iterative) {
     printf("Press any key\n");
     getch();
   }
 }
 
+void test(char *message, void (*test_fn)(void)) {
+  test_start(message);
+  test_fn();
+  test_finish();
+}
+
 void expect_str(char *message, char *actual, char *expected) {
-  print_result(strcmp(actual, expected) == 0, message);
+  bool result = strcmp(actual, expected) == 0;
+  print_result(result, message);
+
+  if (!result) {
+    printf("    expected: %s but received %s", expected, actual);
+  }
 }
 
 void expect_int(char *message, int actual, int expected) {

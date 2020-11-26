@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include "llist.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -190,4 +193,12 @@ bool ll_is_equal(cell_t *list1, cell_t *list2) {
   } while (list1 != NULL);
 
   return true;
+}
+
+void ll_swap(cell_t *cell1, cell_t *cell2) {
+
+}
+
+void ll_reverse(cell_t *cell) {
+
 }
