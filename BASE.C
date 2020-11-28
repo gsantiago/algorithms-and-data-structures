@@ -7,6 +7,11 @@
 #include "base.h"
 
 typedef struct {
+  char *label;
+  callback_t callback;
+} test_suite_t;
+
+typedef struct {
   int index;
   int passed;
   int failed;
@@ -15,6 +20,8 @@ typedef struct {
   double time;
   bool iterative;
   FILE *log;
+  test_suite_t **tests;
+  int count;
 } test_t;
 
 test_t test_obj;
@@ -75,7 +82,7 @@ static void print_help() {
   exit(0);
 }
 
-void tests_begin(int argc, char **argv) {
+void tests_init(int argc, char **argv) {
   if (cli_contains(argc, argv, "-h")) {
     print_help();
   }
@@ -85,6 +92,8 @@ void tests_begin(int argc, char **argv) {
   test_obj.index = 0;
   test_obj.passed = 0;
   test_obj.failed = 0;
+  test_obj.count = 0;
+  test_obj.tests = (test_suite_t**)malloc(0);
   test_obj.time = 0;
   test_obj.iterative = cli_contains(argc, argv, "-i");
   test_obj.log = cli_contains(argc, argv, "-l")
@@ -92,7 +101,7 @@ void tests_begin(int argc, char **argv) {
     : NULL;
 }
 
-int tests_end() {
+static int tests_end() {
   int total = test_obj.passed + test_obj.failed;
 
   printf("\n");
@@ -131,7 +140,7 @@ int tests_end() {
   return test_obj.failed > 0;
 }
 
-void test_start(char *message) {
+static void test_start(char *message) {
   start = clock();
   cprintf("%d) %s ", ++test_obj.index, message);
   print_logf("%d) %s\n", test_obj.index, message);
@@ -140,7 +149,7 @@ void test_start(char *message) {
   printf("\n");
 }
 
-void test_finish() {
+static void test_finish() {
   int x, y;
   x = wherex();
   y = wherey();
@@ -158,10 +167,26 @@ void test_finish() {
   }
 }
 
-void test(char *message, void (*test_fn)(void)) {
-  test_start(message);
-  test_fn();
-  test_finish();
+void test(char *label, callback_t callback) {
+  test_obj.tests = (test_suite_t**)realloc(test_obj.tests, sizeof(test_suite_t) * (test_obj.count + 1));
+  test_obj.tests[test_obj.count] = (test_suite_t*)malloc(sizeof(test_suite_t));
+
+  test_obj.tests[test_obj.count]->label = label;
+  test_obj.tests[test_obj.count]->callback = callback;
+
+  test_obj.count++;
+}
+
+int tests_run() {
+  int i;
+
+  for (i = 0; i < test_obj.count; i++) {
+    test_start(test_obj.tests[i]->label);
+    test_obj.tests[i]->callback();
+    test_finish();
+  }
+
+  return tests_end();
 }
 
 void expect_str(char *message, char *actual, char *expected) {
@@ -173,12 +198,12 @@ void expect_str(char *message, char *actual, char *expected) {
   }
 }
 
-void expect_int(char *message, int actual, int expected) {
+void expect_int_eql(char *message, int actual, int expected) {
   print_result(actual == expected, message);
 }
 
-void expect_eql(char *message, int expression) {
-  print_result(expression != 0, message);
+void expect_eql(char *message, void *pointer1, void *pointer2) {
+  print_result(pointer1 == pointer2, message);
 }
 
 void expect_bool(char *message, bool actual, bool expected) {
