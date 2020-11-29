@@ -81,7 +81,7 @@ void suite_insert_element_into_empty_list() {
   );
 }
 
-void suite_insert_multiple_elements() {
+void suite_insert_elements() {
   int values[5] = {10, 20, 30, 40, 50};
   int i;
   list_t list;
@@ -108,12 +108,55 @@ void suite_insert_multiple_elements() {
   );
 }
 
+void suite_insert_multiple_elements() {
+  list_t list;
+  list_cell_t *cell;
+  int a, b, c, d;
+  int i, return_value;
+
+  a = 20;
+  b = 30;
+  c = 40;
+  d = 50;
+
+  list_init(&list);
+  return_value = list_insert_values(
+    &list,
+    4,
+    &a,
+    &b,
+    &c,
+    &d
+  );
+
+  expect_int_eql(
+    "return value should be 0",
+    return_value,
+    0
+  );
+
+  expect_int_eql(
+    "list.size should be 4",
+    list.size,
+    4
+  );
+
+  for (i = 20, cell = list.head; i <= 50; i += 10, cell = cell->next) {
+    expect_int_eql(
+      "cell should have the correct value",
+      get_int(cell->data),
+      i
+    );
+  }
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
   test("initialize a list", suite_init_list);
   test("destroys a list", suite_destroy_list);
   test("insert element to an empty list", suite_insert_element_into_empty_list);
+  test("insert elements", suite_insert_elements);
   test("insert multiple elements", suite_insert_multiple_elements);
 
   return tests_run();

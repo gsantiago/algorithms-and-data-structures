@@ -12,13 +12,15 @@ void list_init(list_t *list) {
 }
 
 void list_destroy(list_t *list) {
-  list_cell_t *cell = list->head;
+  list_cell_t *cell, *next;
+
+  cell = list->head;
 
   while (cell != NULL) {
+    next = cell->next;
     free(cell->data);
-    cell->data = NULL;
     free(cell);
-    cell = cell->next;
+    cell = next;
   }
 }
 
@@ -50,6 +52,29 @@ int list_insert(list_t *list, list_cell_t *element, void *data) {
   }
 
   list->size++;
+
+  return 0;
+}
+
+int list_insert_values(list_t *list, int count, ...) {
+  int i;
+  int return_value;
+  va_list args;
+  list_cell_t *cell = NULL;
+
+  va_start(args, count);
+
+  for (i = 0; i < count; i++) {
+    return_value = list_insert(list, cell, va_arg(args, void*));
+
+    if (return_value != 0) {
+      return return_value;
+    }
+
+    cell = list->tail;
+  }
+
+  va_end(args);
 
   return 0;
 }
