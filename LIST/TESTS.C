@@ -95,9 +95,9 @@ void suite_insert_elements() {
 
   for (i = 5, cell = list.head; i > 0; i--, cell = cell->next) {
     expect_int_eql(
-      "cell->data should have the correct value",
-      get_int(cell->data),
-      values[i - 1]
+      "cell->data should be %d",
+      values[i - 1],
+      get_int(cell->data)
     );
   }
 
@@ -143,9 +143,9 @@ void suite_insert_multiple_elements() {
 
   for (i = 20, cell = list.head; i <= 50; i += 10, cell = cell->next) {
     expect_int_eql(
-      "cell should have the correct value",
-      get_int(cell->data),
-      i
+      "cell should be %d",
+      i,
+      get_int(cell->data)
     );
   }
 }

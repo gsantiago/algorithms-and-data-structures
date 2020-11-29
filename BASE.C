@@ -41,38 +41,54 @@ bool cli_contains(int argc, char **argv, char *command) {
   return false;
 }
 
-static void print_logf(char *format, ...) {
-  va_list args;
-  va_start(args, format);
-
+static void vprintf_log(char *format, va_list args) {
   if (test_obj.log != NULL) {
     vfprintf(test_obj.log, format, args);
   }
+}
+
+static void printf_log(char *format, ...) {
+  va_list args;
+  va_start(args, format);
+
+  vprintf_log(format, args);
 
   va_end(args);
 }
 
-static void print_result(int result, char *message) {
+static void process_result(int result, char *format, ...) {
+  va_list args;
+
+  va_start(args, format);
+
   printf("  ");
 
   if (result) {
     textbackground(GREEN);
     textcolor(BLACK);
     cprintf("PASS");
-    print_logf("[PASS]");
+    printf_log("[PASS]");
     test_obj.passed++;
   } else {
     textbackground(RED);
     textcolor(BLACK);
     cprintf("FAIL");
-    print_logf("[FAIL]");
+    printf_log("[FAIL]");
     test_obj.failed++;
   }
 
   textbackground(BLACK);
   textcolor(LIGHTGRAY);
-  cprintf(" %s\r\n", message);
-  print_logf(" %s\n", message);
+
+  printf(" ");
+  vprintf(format, args);
+  printf("\r\n");
+
+  printf_log(" ");
+  vprintf_log(format, args);
+  printf_log("\n");
+
+  va_end(args);
 }
 
 static void print_help() {
@@ -124,7 +140,7 @@ static int tests_end() {
   textcolor(LIGHTGRAY);
   cprintf("Time: %fs\r\n", test_obj.time);
 
-  print_logf(
+  printf_log(
     "---\nPassed: %d/%d\nFailed: %d/%d\nTime: %fs\n",
     test_obj.passed,
     total,
@@ -143,7 +159,7 @@ static int tests_end() {
 static void test_start(char *message) {
   start = clock();
   cprintf("%d) %s ", ++test_obj.index, message);
-  print_logf("%d) %s\n", test_obj.index, message);
+  printf_log("%d) %s\n", test_obj.index, message);
   test_obj.x = wherex();
   test_obj.y = wherey();
   printf("\n");
@@ -158,7 +174,7 @@ static void test_finish() {
   test_obj.time += cpu_time_used;
   gotoxy(test_obj.x, test_obj.y);
   cprintf("(%.4fs)", cpu_time_used);
-  print_logf("(%fs)\n\n", cpu_time_used);
+  printf_log("(%fs)\n\n", cpu_time_used);
   gotoxy(x, y);
 
   if (test_obj.iterative) {
@@ -191,7 +207,7 @@ int tests_run() {
 
 void expect_str(char *message, char *actual, char *expected) {
   bool result = strcmp(actual, expected) == 0;
-  print_result(result, message);
+  process_result(result, message);
 
   if (!result) {
     printf("    expected: %s but received %s", expected, actual);
@@ -199,29 +215,29 @@ void expect_str(char *message, char *actual, char *expected) {
 }
 
 void expect_int_eql(char *message, int actual, int expected) {
-  print_result(actual == expected, message);
+  process_result(actual == expected, message, actual, expected);
 }
 
 void expect_char_eql(char *message, char actual, char expected) {
-  print_result(actual == expected, message);
+  process_result(actual == expected, message);
 }
 
 void expect_eql(char *message, void *pointer1, void *pointer2) {
-  print_result(pointer1 == pointer2, message);
+  process_result(pointer1 == pointer2, message);
 }
 
 void expect_bool(char *message, bool actual, bool expected) {
-  print_result(actual == expected, message);
+  process_result(actual == expected, message);
 }
 
 void expect_true(char *message, bool value) {
-  print_result(value, message);
+  process_result(value, message);
 }
 
 void expect_false(char *message, bool value) {
-  print_result(!value, message);
+  process_result(!value, message);
 }
 
 void expect_null(char *message, void *pointer) {
-  print_result(pointer == NULL, message);
+  process_result(pointer == NULL, message);
 }
