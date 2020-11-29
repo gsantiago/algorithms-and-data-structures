@@ -8,8 +8,15 @@
 
 void suite_init_list() {
   list_t list;
+  int return_value;
 
-  list_init(&list);
+  return_value = list_init(&list);
+
+  expect_int_eql(
+    "return value should be 0",
+    return_value,
+    0
+  );
 
   expect_int_eql(
     "list.size should be 0",
@@ -25,6 +32,16 @@ void suite_init_list() {
   expect_null(
     "list.tail should be NULL",
     list.tail
+  );
+}
+
+void suite_init_invalid_list() {
+  int return_value = list_init(NULL);
+
+  expect_int_eql(
+    "should return -1",
+    return_value,
+    -1
   );
 }
 
@@ -154,6 +171,7 @@ int main(int argc, char **argv) {
   tests_init(argc, argv);
 
   test("initialize a list", suite_init_list);
+  test("initialize an invalid list", suite_init_invalid_list);
   test("destroys a list", suite_destroy_list);
   test("insert element to an empty list", suite_insert_element_into_empty_list);
   test("insert elements", suite_insert_elements);

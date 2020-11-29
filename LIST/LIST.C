@@ -5,10 +5,16 @@
 #include <string.h>
 #include "list.h"
 
-void list_init(list_t *list) {
-  list->size = 0;
-  list->head = NULL;
-  list->tail = NULL;
+int list_init(list_t *list) {
+  if (list != NULL) {
+    list->size = 0;
+    list->head = NULL;
+    list->tail = NULL;
+
+    return 0;
+  }
+
+  return -1;
 }
 
 void list_destroy(list_t *list) {
