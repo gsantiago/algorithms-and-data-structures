@@ -1,16 +1,16 @@
-llist.c: llist.h
-	tcc -c llist.c
+list.c: list.h
+	tcc -c list.c
 
-llist.obj: llist.c
+list.obj: list.c
 
 tests.c:
 	tcc -c tests.c
 
-tests.obj: llist.obj tests.c
+tests.obj: list.obj tests.c
 
 compile: tests.obj
 	tcc -c -I..\ ..\base.c
-	tcc tests.obj llist.obj base.obj
+	tcc tests.obj list.obj base.obj
 
 run: compile
 	tests.exe

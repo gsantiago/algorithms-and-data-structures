@@ -3,16 +3,25 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include "llist.h"
+#include "list.h"
 
-void ll_init(ll_list_t *list) {
+void list_init(list_t *list) {
   list->size = 0;
   list->head = NULL;
   list->tail = NULL;
 }
 
-int ll_insert(ll_list_t *list, ll_cell_t *element, void* data) {
-  ll_cell_t *cell = (ll_cell_t*)malloc(sizeof(ll_cell_t));
+void list_destroy(list_t *list) {
+  list_cell_t *cell = list->head;
+
+  while (cell != NULL) {
+    free(cell);
+    cell = cell->next;
+  }
+}
+
+int list_insert(list_t *list, list_cell_t *element, void *data) {
+  list_cell_t *cell = malloc(sizeof(list_cell_t));
 
   /* Could not allocate memory for the new cell */
   if (cell == NULL) {

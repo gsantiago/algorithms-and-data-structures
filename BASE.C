@@ -202,6 +202,10 @@ void expect_int_eql(char *message, int actual, int expected) {
   print_result(actual == expected, message);
 }
 
+void expect_char_eql(char *message, char actual, char expected) {
+  print_result(actual == expected, message);
+}
+
 void expect_eql(char *message, void *pointer1, void *pointer2) {
   print_result(pointer1 == pointer2, message);
 }

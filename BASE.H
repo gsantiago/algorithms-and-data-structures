@@ -32,6 +32,7 @@ int tests_run();
 
 void expect_str(char *message, char *actual, char *expected);
 void expect_int_eql(char *message, int actual, int expected);
+void expect_char_eql(char *message, char actual, char expected);
 void expect_eql(char *message, void *pointer1, void *pointer2);
 void expect_bool(char *message, bool actual, bool expected);
 void expect_true(char *message, bool value);
