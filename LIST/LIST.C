@@ -15,6 +15,8 @@ void list_destroy(list_t *list) {
   list_cell_t *cell = list->head;
 
   while (cell != NULL) {
+    free(cell->data);
+    cell->data = NULL;
     free(cell);
     cell = cell->next;
   }

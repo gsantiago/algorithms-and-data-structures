@@ -30,10 +30,11 @@ void suite_init_list() {
 
 void suite_destroy_list() {
   list_t list;
-  char value = 'A';
+  char *value = malloc(sizeof(char));
+  *value = 'A';
 
   list_init(&list);
-  list_insert(&list, NULL, &value);
+  list_insert(&list, NULL, value);
 
   expect_char_eql(
     "list.head->data should be 'A'",
