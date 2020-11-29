@@ -205,13 +205,9 @@ int tests_run() {
   return tests_end();
 }
 
-void expect_str(char *message, char *actual, char *expected) {
+void expect_str_eql(char *message, char *actual, char *expected) {
   bool result = strcmp(actual, expected) == 0;
-  process_result(result, message);
-
-  if (!result) {
-    printf("    expected: %s but received %s", expected, actual);
-  }
+  process_result(result, message, actual, expected);
 }
 
 void expect_int_eql(char *message, int actual, int expected) {
@@ -219,7 +215,7 @@ void expect_int_eql(char *message, int actual, int expected) {
 }
 
 void expect_char_eql(char *message, char actual, char expected) {
-  process_result(actual == expected, message);
+  process_result(actual == expected, message, actual, expected);
 }
 
 void expect_eql(char *message, void *pointer1, void *pointer2) {

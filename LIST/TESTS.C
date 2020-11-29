@@ -167,6 +167,74 @@ void suite_insert_multiple_elements() {
   }
 }
 
+void suite_concat_lists() {
+  list_t list1, list2;
+  list_cell_t *cell;
+  int i;
+  char array1[3] = {'A', 'B', 'C'};
+  char array2[2] = {'D', 'E'};
+  char string[6];
+
+  list_init(&list1);
+  list_init(&list2);
+
+  list_insert_values(
+    &list1,
+    3,
+    &array1[0], &array1[1], &array1[2]
+  );
+
+  list_insert_values(
+    &list2,
+    2,
+    &array2[0], &array2[1]
+  );
+
+  expect_int_eql(
+    "list1.size should be 3",
+    list1.size,
+    3
+  );
+
+  expect_int_eql(
+    "list2.size should be 2",
+    list2.size,
+    2
+  );
+
+  list_concat(&list1, &list2);
+
+  expect_int_eql(
+    "list1.size should be 5",
+    list1.size,
+    5
+  );
+
+  for (i = 0, cell = list1.head; i < 5; i++, cell = cell->next) {
+    string[i] = GET_CHAR(cell->data);
+  }
+
+  string[5] = '\0';
+
+  expect_str_eql(
+    "list1 elements should be %s",
+    "ABCDE",
+    string
+  );
+
+  expect_char_eql(
+    "list1.head->data should be 'A'",
+    GET_CHAR(list1.head->data),
+    'A'
+  );
+
+  expect_char_eql(
+    "list1.tail->data should be 'E'",
+    GET_CHAR(list1.tail->data),
+    'E'
+  );
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -176,6 +244,7 @@ int main(int argc, char **argv) {
   test("insert element to an empty list", suite_insert_element_into_empty_list);
   test("insert elements", suite_insert_elements);
   test("insert multiple elements", suite_insert_multiple_elements);
+  test("concat two lists", suite_concat_lists);
 
   return tests_run();
 }

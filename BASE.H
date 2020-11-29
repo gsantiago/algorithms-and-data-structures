@@ -30,7 +30,7 @@ int tests_run();
  * Expect.
  */
 
-void expect_str(char *message, char *actual, char *expected);
+void expect_str_eql(char *message, char *actual, char *expected);
 void expect_int_eql(char *message, int actual, int expected);
 void expect_char_eql(char *message, char actual, char expected);
 void expect_eql(char *message, void *pointer1, void *pointer2);

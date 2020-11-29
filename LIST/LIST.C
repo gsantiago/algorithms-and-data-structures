@@ -84,3 +84,9 @@ int list_insert_values(list_t *list, int count, ...) {
 
   return 0;
 }
+
+void list_concat(list_t *list1, list_t* list2) {
+  list1->size += list2->size;
+  list1->tail->next = list2->head;
+  list1->tail = list2->tail;
+}
