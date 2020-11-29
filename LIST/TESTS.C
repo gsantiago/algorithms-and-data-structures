@@ -3,8 +3,8 @@
 #include "list.h"
 #include "../base.h"
 
-#define get_int(value) *((int*)value)
-#define get_char(value) *((char*)value)
+#define GET_INT(value) *((int*)value)
+#define GET_CHAR(value) *((char*)value)
 
 void suite_init_list() {
   list_t list;
@@ -55,7 +55,7 @@ void suite_destroy_list() {
 
   expect_char_eql(
     "list.head->data should be 'A'",
-    get_char(list.head->data),
+    GET_CHAR(list.head->data),
     'A'
   );
 
@@ -87,7 +87,7 @@ void suite_insert_element_into_empty_list() {
 
   expect_int_eql(
     "list.head->data should be 120",
-    get_int(list.head->data),
+    GET_INT(list.head->data),
     120
   );
 
@@ -114,7 +114,7 @@ void suite_insert_elements() {
     expect_int_eql(
       "cell->data should be %d",
       values[i - 1],
-      get_int(cell->data)
+      GET_INT(cell->data)
     );
   }
 
@@ -162,7 +162,7 @@ void suite_insert_multiple_elements() {
     expect_int_eql(
       "cell should be %d",
       i,
-      get_int(cell->data)
+      GET_INT(cell->data)
     );
   }
 }
