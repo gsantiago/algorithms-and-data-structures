@@ -20,5 +20,6 @@ int list_insert(list_t *list, list_cell_t *element, void* data);
 int list_insert_values(list_t *list, int count, ...);
 void list_concat(list_t *list1, list_t* list2);
 void list_invert(list_t *list);
+list_cell_t *list_search(list_t *list, void *data);
 
 #endif

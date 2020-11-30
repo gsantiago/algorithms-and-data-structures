@@ -290,6 +290,54 @@ void suite_invert_list() {
   );
 }
 
+void suite_search_cell() {
+  list_t list;
+  list_cell_t *cell;
+  char values[5] = {'G', 'U', 'I', 'L', 'H'};
+  char ch = 'E';
+
+  list_init(&list);
+
+  list_insert_values(
+    &list,
+    5,
+    &values[0],
+    &values[1],
+    &values[2],
+    &values[3],
+    &values[4]
+  );
+
+  cell = list_search(&list, &values[3]);
+
+  expect_char_eql(
+    "cell->data should be 'L'",
+    GET_CHAR(cell->data),
+    'L'
+  );
+
+  expect_char_eql(
+    "cell->next->data should be 'H'",
+    GET_CHAR(cell->next->data),
+    'H'
+  );
+
+  cell = list_search(&list, &values[0]);
+
+  expect_char_eql(
+    "cell->data should be 'G'",
+    GET_CHAR(cell->data),
+    'G'
+  );
+
+  cell = list_search(&list, &ch);
+
+  expect_null(
+    "cell should be NULL",
+    cell
+  );
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -301,6 +349,7 @@ int main(int argc, char **argv) {
   test("insert multiple elements", suite_insert_multiple_elements);
   test("concat two lists", suite_concat_lists);
   test("invert a list", suite_invert_list);
+  test("search a cell in a list", suite_search_cell);
 
   return tests_run();
 }

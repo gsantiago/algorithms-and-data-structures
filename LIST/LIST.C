@@ -108,3 +108,17 @@ void list_invert(list_t *list) {
   list->head = list->tail;
   list->tail = aux;
 }
+
+list_cell_t *list_search(list_t *list, void *data) {
+  list_cell_t *cell = list->head;
+
+  while (cell != NULL) {
+    if (cell->data == data) {
+      return cell;
+    }
+
+    cell = cell->next;
+  }
+
+  return NULL;
+}
