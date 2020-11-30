@@ -90,3 +90,21 @@ void list_concat(list_t *list1, list_t* list2) {
   list1->tail->next = list2->head;
   list1->tail = list2->tail;
 }
+
+void list_invert(list_t *list) {
+  list_cell_t *cell, *next, *aux;
+
+  cell = list->head;
+  aux = NULL;
+
+  while (cell != NULL) {
+    next = cell->next;
+    cell->next = aux;
+    aux = cell;
+    cell = next;
+  }
+
+  aux = list->head;
+  list->head = list->tail;
+  list->tail = aux;
+}

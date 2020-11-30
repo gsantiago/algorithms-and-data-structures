@@ -235,6 +235,61 @@ void suite_concat_lists() {
   );
 }
 
+void suite_invert_list() {
+  list_t list;
+  list_cell_t *cell;
+  int i;
+  char string[5] = {'Z', 'X', 'T', 'Y', '\0'};
+  char string_test[5];
+
+  list_init(&list);
+
+  list_insert_values(
+    &list,
+    4,
+    &string[0],
+    &string[1],
+    &string[2],
+    &string[3]
+  );
+
+  expect_char_eql(
+    "list.head->data should be 'Z'",
+    GET_CHAR(list.head->data),
+    'Z'
+  );
+
+  list_invert(&list);
+
+  expect_char_eql(
+    "list.head->data should be 'Y'",
+    GET_CHAR(list.head->data),
+    'Y'
+  );
+
+  expect_char_eql(
+    "list.tail->data should be 'Z'",
+    GET_CHAR(list.tail->data),
+    'Z'
+  );
+
+  expect_null(
+    "list.tail->next should be NULL",
+    list.tail->next
+  );
+
+  for (i = 0, cell = list.head; i < list.size; i++, cell = cell->next) {
+    string_test[i] = GET_CHAR(cell->data);
+  }
+  string_test[4] = '\0';
+
+  expect_str_eql(
+    "list data should be %s",
+    "YTXZ",
+    string_test
+  );
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -245,6 +300,7 @@ int main(int argc, char **argv) {
   test("insert elements", suite_insert_elements);
   test("insert multiple elements", suite_insert_multiple_elements);
   test("concat two lists", suite_concat_lists);
+  test("invert a list", suite_invert_list);
 
   return tests_run();
 }
