@@ -374,6 +374,159 @@ void suite_swap_cells() {
   );
 }
 
+void suite_remove_first_cell() {
+  list_t list;
+  char *a, *b, *c;
+
+  a = malloc(sizeof(char));
+  b = malloc(sizeof(char));
+  c = malloc(sizeof(char));
+
+  *a = 'A';
+  *b = 'B';
+  *c = 'C';
+
+  list_init(&list);
+  list_insert_values(
+    &list,
+    3,
+    a, b, c
+  );
+
+  expect_int_eql(
+    "list.size should be 3",
+    list.size,
+    3
+  );
+
+  list_remove_next(
+    &list,
+    NULL
+  );
+
+  expect_int_eql(
+    "list.size should be 2",
+    list.size,
+    2
+  );
+
+  expect_char_eql(
+    "list.head->data should be 'B'",
+    GET_CHAR(list.head->data),
+    'B'
+  );
+
+  expect_eql(
+    "list.head->next should be cell 'C'",
+    list.head->next,
+    list_search(&list, c)
+  );
+
+  list_destroy(&list);
+}
+
+void suite_remove_cell_from_list() {
+  list_t list;
+  list_cell_t *tmp;
+  int *a, *b, *c;
+
+  a = malloc(sizeof(int));
+  b = malloc(sizeof(int));
+  c = malloc(sizeof(int));
+
+  *a = 5;
+  *b = 8;
+  *c = 10;
+
+  list_init(&list);
+
+  list_insert_values(
+    &list,
+    3,
+    a, b, c
+  );
+
+  list_remove_next(&list, list.head);
+
+  expect_int_eql(
+    "list.size should be 2",
+    list.size,
+    2
+  );
+
+  expect_int_eql(
+    "list.head->data should be 5",
+    GET_INT(list.head->data),
+    5
+  );
+
+  expect_int_eql(
+    "list.tail->data should be 10",
+    GET_INT(list.tail->data),
+    10
+  );
+
+  expect_eql(
+    "list.head->next should point to the tail",
+    list.head->next,
+    list.tail
+  );
+
+  list_destroy(&list);
+}
+
+void suite_remove_last_cell() {
+  list_t list;
+  char *f, *b, *i;
+
+  f = malloc(sizeof(char));
+  b = malloc(sizeof(char));
+  i = malloc(sizeof(char));
+
+  *f = 'F';
+  *b = 'B';
+  *i = 'I';
+
+  list_init(&list);
+
+  list_insert_values(
+    &list,
+    3,
+    f, b, i
+  );
+
+  list_remove_next(
+    &list,
+    list_search(&list, b)
+  );
+
+  expect_int_eql(
+    "list.size should be 2",
+    list.size,
+    2
+  );
+
+  expect_char_eql(
+    "list.head->data should be 'F'",
+    GET_CHAR(list.head->data),
+    'F'
+  );
+
+  expect_char_eql(
+    "list.tail->data should be 'B'",
+    GET_CHAR(list.tail->data),
+    'B'
+  );
+
+  expect_eql(
+    "list.head->next should point to tail",
+    list.head->next,
+    list.tail
+  );
+
+  list_destroy(&list);
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -387,6 +540,9 @@ int main(int argc, char **argv) {
   test("invert a list", suite_invert_list);
   test("search a cell in a list", suite_search_cell);
   test("swap two cells", suite_swap_cells);
+  test("remove the first cell", suite_remove_first_cell);
+  test("remove a cell from the list", suite_remove_cell_from_list);
+  test("remove the last cell", suite_remove_last_cell);
 
   return tests_run();
 }

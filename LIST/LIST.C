@@ -5,6 +5,19 @@
 #include <string.h>
 #include "list.h"
 
+#define GET_INT(value) *((int*)value)
+#define GET_CHAR(value) *((char*)value)
+
+static void destroy_cell(list_cell_t *cell) {
+  if (cell != NULL) {
+    if (cell->data != NULL) {
+      free(cell->data);
+    }
+
+    free(cell);
+  }
+}
+
 int list_init(list_t *list) {
   if (list != NULL) {
     list->size = 0;
@@ -24,8 +37,7 @@ void list_destroy(list_t *list) {
 
   while (cell != NULL) {
     next = cell->next;
-    free(cell->data);
-    free(cell);
+    destroy_cell(cell);
     cell = next;
   }
 }
@@ -127,4 +139,32 @@ void list_swap(list_cell_t *cell1, list_cell_t *cell2) {
   void *ptr = cell1->data;
   cell1->data = cell2->data;
   cell2->data = ptr;
+}
+
+int list_remove_next(list_t *list, list_cell_t *cell) {
+  list_cell_t *ptr;
+
+  if (list->size == 0 || list->tail == cell) {
+    return -1;
+  }
+
+  if (cell == NULL) {
+    ptr = list->head->next;
+    destroy_cell(list->head);
+    list->head = ptr;
+  } else {
+    ptr = cell->next->next;
+
+    if (list->tail == cell->next) {
+      list->tail = cell;
+    }
+
+    destroy_cell(cell->next);
+
+    cell->next = ptr;
+  }
+
+  list->size--;
+
+  return 0;
 }

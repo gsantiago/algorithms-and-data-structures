@@ -22,5 +22,6 @@ void list_concat(list_t *list1, list_t* list2);
 void list_invert(list_t *list);
 list_cell_t *list_search(list_t *list, void *data);
 void list_swap(list_cell_t *cell1, list_cell_t *cell2);
+int list_remove_next(list_t *list, list_cell_t *cell);
 
 #endif
