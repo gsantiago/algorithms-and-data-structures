@@ -122,3 +122,9 @@ list_cell_t *list_search(list_t *list, void *data) {
 
   return NULL;
 }
+
+void list_swap(list_cell_t *cell1, list_cell_t *cell2) {
+  void *ptr = cell1->data;
+  cell1->data = cell2->data;
+  cell2->data = ptr;
+}

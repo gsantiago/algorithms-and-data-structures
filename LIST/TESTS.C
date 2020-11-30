@@ -338,6 +338,42 @@ void suite_search_cell() {
   );
 }
 
+void suite_swap_cells() {
+  list_t list;
+  list_cell_t *cell1, *cell2, *ptr;
+  char name[6] = {'M', 'o', 'n', 'i', 'c', 'a'};
+  char string[7];
+  int i;
+
+  list_init(&list);
+  list_insert_values(
+    &list,
+    6,
+    &name[0],
+    &name[1],
+    &name[2],
+    &name[3],
+    &name[4],
+    &name[5]
+  );
+
+  cell1 = list_search(&list, &name[1]);
+  cell2 = list_search(&list, &name[5]);
+
+  list_swap(cell1, cell2);
+
+  for (i = 0, ptr = list.head; i < list.size; i++, ptr = ptr->next) {
+    string[i] = GET_CHAR(ptr->data);
+  }
+  string[6] = '\0';
+
+  expect_str_eql(
+    "list should contain %s",
+    "Manico",
+    string
+  );
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -350,6 +386,7 @@ int main(int argc, char **argv) {
   test("concat two lists", suite_concat_lists);
   test("invert a list", suite_invert_list);
   test("search a cell in a list", suite_search_cell);
+  test("swap two cells", suite_swap_cells);
 
   return tests_run();
 }
