@@ -8,10 +8,10 @@
 #define GET_INT(value) *((int*)value)
 #define GET_CHAR(value) *((char*)value)
 
-static void destroy_cell(list_cell_t *cell) {
+static void destroy_cell(list_t *list, list_cell_t *cell) {
   if (cell != NULL) {
     if (cell->data != NULL) {
-      free(cell->data);
+      list->destroy(cell->data);
     }
 
     free(cell);
@@ -23,6 +23,7 @@ int list_init(list_t *list) {
     list->size = 0;
     list->head = NULL;
     list->tail = NULL;
+    list->destroy = free;
 
     return 0;
   }
@@ -37,7 +38,7 @@ void list_destroy(list_t *list) {
 
   while (cell != NULL) {
     next = cell->next;
-    destroy_cell(cell);
+    destroy_cell(list, cell);
     cell = next;
   }
 }
@@ -150,7 +151,7 @@ int list_remove_next(list_t *list, list_cell_t *cell) {
 
   if (cell == NULL) {
     ptr = list->head->next;
-    destroy_cell(list->head);
+    destroy_cell(list, list->head);
     list->head = ptr;
   } else {
     ptr = cell->next->next;
@@ -159,7 +160,7 @@ int list_remove_next(list_t *list, list_cell_t *cell) {
       list->tail = cell;
     }
 
-    destroy_cell(cell->next);
+    destroy_cell(list, cell->next);
 
     cell->next = ptr;
   }

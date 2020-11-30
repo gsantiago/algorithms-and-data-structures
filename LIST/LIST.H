@@ -12,6 +12,7 @@ typedef struct {
   int size;
   list_cell_t *head;
   list_cell_t *tail;
+  void (*destroy)(void *data);
 } list_t;
 
 int list_init(list_t *list);
