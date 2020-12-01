@@ -37,7 +37,7 @@ void list_destroy(list_t *list) {
   }
 }
 
-int list_insert(list_t *list, list_cell_t *element, void *data) {
+int list_insert_after(list_t *list, list_cell_t *element, void *data) {
   list_cell_t *cell = malloc(sizeof(list_cell_t));
 
   /* Could not allocate memory for the new cell */
@@ -78,7 +78,7 @@ int list_insert_values(list_t *list, int count, ...) {
   va_start(args, count);
 
   for (i = 0; i < count; i++) {
-    return_value = list_insert(list, cell, va_arg(args, void*));
+    return_value = list_insert_after(list, cell, va_arg(args, void*));
 
     if (return_value != 0) {
       return return_value;
@@ -136,7 +136,7 @@ void list_swap(list_cell_t *cell1, list_cell_t *cell2) {
   cell2->data = ptr;
 }
 
-int list_remove_next(list_t *list, list_cell_t *cell) {
+int list_remove_after(list_t *list, list_cell_t *cell) {
   list_cell_t *ptr;
 
   if (list->size == 0 || list->tail == cell) {

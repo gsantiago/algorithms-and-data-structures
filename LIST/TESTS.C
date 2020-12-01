@@ -51,7 +51,7 @@ void suite_destroy_list() {
   *value = 'A';
 
   list_init(&list);
-  list_insert(&list, NULL, value);
+  list_insert_after(&list, NULL, value);
 
   expect_char_eql(
     "list.head->data should be 'A'",
@@ -71,7 +71,7 @@ void suite_insert_element_into_empty_list() {
   list_init(&list);
 
   value = 120;
-  return_value = list_insert(&list, NULL, &value);
+  return_value = list_insert_after(&list, NULL, &value);
 
   expect_int_eql(
     "list_insert should return 0",
@@ -107,7 +107,7 @@ void suite_insert_elements() {
   list_init(&list);
 
   for (i = 0; i < 5; i++) {
-    list_insert(&list, NULL, &values[i]);
+    list_insert_after(&list, NULL, &values[i]);
   }
 
   for (i = 5, cell = list.head; i > 0; i--, cell = cell->next) {
@@ -399,7 +399,7 @@ void suite_remove_first_cell() {
     3
   );
 
-  list_remove_next(
+  list_remove_after(
     &list,
     NULL
   );
@@ -446,7 +446,7 @@ void suite_remove_cell_from_list() {
     a, b, c
   );
 
-  list_remove_next(&list, list.head);
+  list_remove_after(&list, list.head);
 
   expect_int_eql(
     "list.size should be 2",
@@ -495,7 +495,7 @@ void suite_remove_last_cell() {
     f, b, i
   );
 
-  list_remove_next(
+  list_remove_after(
     &list,
     list_search(&list, b)
   );
