@@ -16,6 +16,7 @@ typedef struct {
 } list_t;
 
 int list_init(list_t *list);
+int list_init_with_destroy(list_t *list, void (*destroy)(void *data));
 void list_destroy(list_t *list);
 int list_insert_after(list_t *list, list_cell_t *element, void* data);
 int list_insert_values(list_t *list, int count, ...);

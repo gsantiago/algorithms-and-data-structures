@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "list.h"
 #include "../base.h"
 
@@ -527,6 +528,69 @@ void suite_remove_last_cell() {
   list_destroy(&list);
 }
 
+typedef struct {
+  char *name;
+  char *email;
+} user_t;
+
+user_t *user_create(char *name, char *email) {
+  user_t *user = malloc(sizeof(list_t));
+
+  user->name = name;
+  user->email = email;
+
+  return user;
+}
+
+void user_destroy(void *data) {
+  user_t *user = (user_t*)data;
+  free(user->name);
+  free(user->email);
+  free(user);
+}
+
+void suite_custom_destroy_function() {
+  user_t *user1, *user2;
+  char *name1, *email1, *name2, *email2;
+  list_t list;
+
+  name1 = malloc(sizeof(char) * 100);
+  name2 = malloc(sizeof(char) * 100);
+  email1 = malloc(sizeof(char) * 200);
+  email2 = malloc(sizeof(char) * 200);
+
+  user1 = user_create(name1, email1);
+  user2 = user_create(name2, email2);
+
+  strcpy(user1->name, "John Doe");
+  strcpy(user1->email, "john.doe@example.com");
+
+  strcpy(user2->name, "Mary Doe");
+  strcpy(user2->email, "mary.doe@example.com");
+
+  list_init_with_destroy(&list, user_destroy);
+
+  list_insert_after(
+    &list,
+    NULL,
+    user1
+  );
+
+  list_insert_after(
+    &list,
+    list_search(&list, user1),
+    user2
+  );
+
+  expect_int_eql(
+    "list.size should be 2",
+    list.size,
+    2
+  );
+
+  list_destroy(&list);
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -543,6 +607,7 @@ int main(int argc, char **argv) {
   test("remove the first cell", suite_remove_first_cell);
   test("remove a cell from the list", suite_remove_cell_from_list);
   test("remove the last cell", suite_remove_last_cell);
+  test("custom destroy function", suite_custom_destroy_function);
 
   return tests_run();
 }

@@ -13,11 +13,15 @@ static void destroy_cell(list_t *list, list_cell_t *cell) {
 }
 
 int list_init(list_t *list) {
+  return list_init_with_destroy(list, free);
+}
+
+int list_init_with_destroy(list_t *list, void (*destroy)(void *data)) {
   if (list != NULL) {
     list->size = 0;
     list->head = NULL;
     list->tail = NULL;
-    list->destroy = free;
+    list->destroy = destroy;
 
     return 0;
   }
@@ -40,7 +44,6 @@ void list_destroy(list_t *list) {
 int list_insert_after(list_t *list, list_cell_t *element, void *data) {
   list_cell_t *cell = malloc(sizeof(list_cell_t));
 
-  /* Could not allocate memory for the new cell */
   if (cell == NULL) {
     return -1;
   }
