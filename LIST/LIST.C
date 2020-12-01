@@ -1,12 +1,6 @@
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdarg.h>
-#include <string.h>
 #include "list.h"
-
-#define GET_INT(value) *((int*)value)
-#define GET_CHAR(value) *((char*)value)
 
 static void destroy_cell(list_t *list, list_cell_t *cell) {
   if (cell != NULL) {
