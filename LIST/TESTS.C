@@ -6,6 +6,7 @@
 
 #define GET_INT(value) *((int*)value)
 #define GET_CHAR(value) *((char*)value)
+#define GET_STR(value) (char*)value
 
 void suite_init_list() {
   list_t list;
@@ -549,6 +550,15 @@ void user_destroy(void *data) {
   free(user);
 }
 
+bool user_match(const void *data1, const void *data2) {
+  user_t *user1, *user2;
+
+  user1 = (user_t*)data1;
+  user2 = (user_t*)data2;
+
+  return strcmp(user1->name, user2->name) == 0;
+}
+
 void suite_custom_destroy_function() {
   user_t *user1, *user2;
   char *name1, *email1, *name2, *email2;
@@ -591,6 +601,52 @@ void suite_custom_destroy_function() {
   list_destroy(&list);
 }
 
+void suite_find_cell() {
+  list_t list;
+  list_cell_t *cell;
+  user_t *user1, *user2, *data;
+
+  user1 = user_create("Guilherme", "");
+  user2 = user_create("Guilherme", "");
+
+  list_init(&list);
+
+  list_insert_after(
+    &list,
+    NULL,
+    user1
+  );
+
+  cell = list_find(&list, user_match, user2);
+  data = (user_t*)cell->data;
+
+  expect_not_null(
+    "cell should not be NULL",
+    cell
+  );
+
+  expect_not_eql(
+    "cell->data and user2 should not be the same pointers",
+    cell->data,
+    user2
+  );
+
+  expect_str_eql(
+    "cell->data should be equal to %s",
+    user1->name,
+    GET_STR(data->name)
+  );
+
+  user2->name = "Santiago";
+
+  cell = list_find(&list, user_match, user2);
+
+  expect_null(
+    "cell should be NULL",
+    cell
+  );
+}
+
 int main(int argc, char **argv) {
   tests_init(argc, argv);
 
@@ -608,6 +664,7 @@ int main(int argc, char **argv) {
   test("remove a cell from the list", suite_remove_cell_from_list);
   test("remove the last cell", suite_remove_last_cell);
   test("custom destroy function", suite_custom_destroy_function);
+  test("find a cell with a custom matcher as callback", suite_find_cell);
 
   return tests_run();
 }

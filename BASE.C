@@ -222,6 +222,10 @@ void expect_eql(char *message, void *pointer1, void *pointer2) {
   process_result(pointer1 == pointer2, message);
 }
 
+void expect_not_eql(char *message, void *pointer1, void *pointer2) {
+  process_result(pointer1 != pointer2, message);
+}
+
 void expect_bool(char *message, bool actual, bool expected) {
   process_result(actual == expected, message);
 }
@@ -236,4 +240,8 @@ void expect_false(char *message, bool value) {
 
 void expect_null(char *message, void *pointer) {
   process_result(pointer == NULL, message);
+}
+
+void expect_not_null(char *message, void *pointer) {
+  process_result(pointer != NULL, message);
 }

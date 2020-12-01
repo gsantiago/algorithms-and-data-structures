@@ -12,6 +12,10 @@ static void destroy_cell(list_t *list, list_cell_t *cell) {
   }
 }
 
+static bool search_match(const void *data1, const void *data2) {
+  return data1 == data2;
+}
+
 int list_init(list_t *list) {
   return list_init_with_destroy(list, free);
 }
@@ -119,11 +123,15 @@ void list_invert(list_t *list) {
   list->tail = aux;
 }
 
-list_cell_t *list_search(list_t *list, void *data) {
+list_cell_t *list_find(
+  list_t *list,
+  bool (*match)(const void *data1, const void *data2),
+  const void *data
+) {
   list_cell_t *cell = list->head;
 
   while (cell != NULL) {
-    if (cell->data == data) {
+    if (match(cell->data, data)) {
       return cell;
     }
 
@@ -131,6 +139,10 @@ list_cell_t *list_search(list_t *list, void *data) {
   }
 
   return NULL;
+}
+
+list_cell_t *list_search(list_t *list, const void *data) {
+  return list_find(list, search_match, data);
 }
 
 void list_swap(list_cell_t *cell1, list_cell_t *cell2) {
