@@ -9,11 +9,11 @@ All examples have unit tests that are run by a simple test runner inspired by Je
 You can run it by running the following commands:
 
 ```
-make compile
-tests.exe
+MAKE
+TESTS.EXE
 ```
 
-`tests.exe` supports some cli arguments:
+`TESTS.EXE` supports some cli arguments:
 - `-i` interative mode
 - `-l` outputs a log file with the results for all tests
 - `-h` shows help

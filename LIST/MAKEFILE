@@ -1,18 +1,27 @@
-OBJECTS = tests.obj list.obj base.obj
+OBJECTS = list.obj base.obj
 CC = tcc
+
+default: clean all
 
 list.obj: list.c list.h
 	$(CC) -c list.c
 
-tests.obj: list.obj tests.c
+tests.obj: tests.c
 	$(CC) -c tests.c
 
-compile: tests.obj
-	$(CC) -c -I..\ ..\base.c
-	$(CC) $(OBJECTS)
+contacts.obj: contacts.c
+	$(CC) -c contacts.c
 
-run: compile
-	tests.exe
+base.obj: ..\base.c
+	$(CC) -c -I..\ ..\base.c
+
+tests.exe: tests.obj $(OBJECTS)
+	$(CC) tests.obj $(OBJECTS)
+
+contacts: contacts.obj $(OBJECTS)
+	$(CC) contacts.obj $(OBJECTS)
+
+all: tests.exe contacts.exe
 
 clean:
 	rescan
