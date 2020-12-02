@@ -1,16 +1,15 @@
-list.c: list.h
-	tcc -c list.c
+OBJECTS = tests.obj list.obj base.obj
+CC = tcc
 
-list.obj: list.c
-
-tests.c:
-	tcc -c tests.c
+list.obj: list.c list.h
+	$(CC) -c list.c
 
 tests.obj: list.obj tests.c
+	$(CC) -c tests.c
 
 compile: tests.obj
-	tcc -c -I..\ ..\base.c
-	tcc tests.obj list.obj base.obj
+	$(CC) -c -I..\ ..\base.c
+	$(CC) $(OBJECTS)
 
 run: compile
 	tests.exe
