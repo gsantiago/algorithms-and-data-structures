@@ -1,19 +1,20 @@
 OBJECTS = list.obj base.obj
 CC = tcc
+FLAGS = -c -I../
 
 default: clean all
 
 list.obj: list.c list.h
-	$(CC) -c list.c
+	$(CC) $(FLAGS) list.c
 
 tests.obj: tests.c
-	$(CC) -c tests.c
+	$(CC) $(FLAGS) tests.c
 
 contacts.obj: contacts.c
-	$(CC) -c contacts.c
+	$(CC) $(FLAGS) -c contacts.c
 
-base.obj: ..\base.c
-	$(CC) -c -I..\ ..\base.c
+base.obj: ..\base\base.c
+	$(CC) -c -I..\base ..\base\base.c
 
 tests.exe: tests.obj $(OBJECTS)
 	$(CC) tests.obj $(OBJECTS)

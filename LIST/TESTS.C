@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
-#include "../base.h"
+#include "base/base.h"
 
 #define GET_INT(value) *((int*)value)
 #define GET_CHAR(value) *((char*)value)

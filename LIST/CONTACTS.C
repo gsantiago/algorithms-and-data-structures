@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
-#include "../base.h"
+#include "base/base.h"
 
 #define APP_VERSION "0.0.1"
 #define FILEPATH "CONTACTS.DAT"
