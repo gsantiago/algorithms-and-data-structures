@@ -1,14 +1,7 @@
 #ifndef BASE_H
 #define BASE_H
 
-/**
- * Defines a boolean type because C doesn't have a native boolean type
- * and TCC doesn't have the `stdbool.h` header available either
- */
-
-#define false 0
-#define true 1
-typedef char bool;
+#include "bool.h"
 
 typedef void (*callback_t)();
 

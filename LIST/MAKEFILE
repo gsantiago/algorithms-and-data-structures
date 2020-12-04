@@ -1,6 +1,6 @@
 OBJECTS = list.obj base.obj
 CC = tcc
-FLAGS = -c -I../
+FLAGS = -c -I..\include
 
 default: clean all
 
@@ -14,7 +14,7 @@ contacts.obj: contacts.c
 	$(CC) $(FLAGS) -c contacts.c
 
 base.obj: ..\include\base.c
-	$(CC) -c -I..\include ..\include\base.c
+	$(CC) $(FLAGS) ..\include\base.c
 
 tests.exe: tests.obj $(OBJECTS)
 	$(CC) tests.obj $(OBJECTS)
