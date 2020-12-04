@@ -1,4 +1,4 @@
-OBJECTS = list.obj base.obj
+OBJECTS = list.obj tester.obj cli.obj
 CC = tcc
 FLAGS = -c -I..\include
 
@@ -13,8 +13,11 @@ tests.obj: tests.c
 contacts.obj: contacts.c
 	$(CC) $(FLAGS) -c contacts.c
 
-base.obj: ..\include\base.c
-	$(CC) $(FLAGS) ..\include\base.c
+cli.obj: ..\include\cli.c
+	$(CC) $(FLAGS) ..\include\cli.c
+
+tester.obj: ..\include\tester.c
+	$(CC) $(FLAGS) ..\include\tester.c
 
 tests.exe: tests.obj $(OBJECTS)
 	$(CC) tests.obj $(OBJECTS)

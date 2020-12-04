@@ -4,7 +4,7 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
-#include "base.h"
+#include "tester.h"
 
 typedef struct {
   char *label;
@@ -28,36 +28,6 @@ test_t test_obj;
 
 clock_t start, end;
 double cpu_time_used;
-
-/**
- * CLI Utilities.
- */
-
-int cli_get_index(int argc, char **argv, char *command) {
-  int i;
-
-  for (i = 0; i < argc; i++) {
-    if (strcmp(argv[i], command) == 0) {
-      return i;
-    }
-  }
-
-  return -1;
-}
-
-bool cli_contains(int argc, char **argv, char *command) {
-  return cli_get_index(argc, argv, command) != -1;
-}
-
-char *cli_get_command_value(int argc, char **argv, char *command) {
-  int index = cli_get_index(argc, argv, command) + 1;
-
-  if (index > argc) {
-    return NULL;
-  }
-
-  return argv[index];
-}
 
 static void vprintf_log(char *format, va_list args) {
   if (test_obj.log != NULL) {
