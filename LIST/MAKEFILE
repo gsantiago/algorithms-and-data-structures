@@ -18,13 +18,17 @@ base.obj: ..\base.c
 tests.exe: tests.obj $(OBJECTS)
 	$(CC) tests.obj $(OBJECTS)
 
-contacts: contacts.obj $(OBJECTS)
+contacts.exe: contacts.obj $(OBJECTS)
 	$(CC) contacts.obj $(OBJECTS)
 
 all: tests.exe contacts.exe
+
+run-contacts: CONTACTS.EXE
+	CONTACTS.EXE
 
 clean:
 	rescan
 	del *.obj
 	del *.exe
 	del *.log
+	del *.dat

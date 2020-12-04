@@ -29,16 +29,34 @@ test_t test_obj;
 clock_t start, end;
 double cpu_time_used;
 
-bool cli_contains(int argc, char **argv, char *command) {
-  int i = 0;
+/**
+ * CLI Utilities.
+ */
+
+int cli_get_index(int argc, char **argv, char *command) {
+  int i;
 
   for (i = 0; i < argc; i++) {
     if (strcmp(argv[i], command) == 0) {
-      return true;
+      return i;
     }
   }
 
-  return false;
+  return -1;
+}
+
+bool cli_contains(int argc, char **argv, char *command) {
+  return cli_get_index(argc, argv, command) != -1;
+}
+
+char *cli_get_command_value(int argc, char **argv, char *command) {
+  int index = cli_get_index(argc, argv, command) + 1;
+
+  if (index > argc) {
+    return NULL;
+  }
+
+  return argv[index];
 }
 
 static void vprintf_log(char *format, va_list args) {
