@@ -13,8 +13,8 @@ tests.obj: tests.c
 contacts.obj: contacts.c
 	$(CC) $(FLAGS) -c contacts.c
 
-base.obj: ..\base\base.c
-	$(CC) -c -I..\base ..\base\base.c
+base.obj: ..\include\base.c
+	$(CC) -c -I..\include ..\include\base.c
 
 tests.exe: tests.obj $(OBJECTS)
 	$(CC) tests.obj $(OBJECTS)
